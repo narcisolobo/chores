@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Welcome, {{ user.full_name }}!</h1>
+        <h2>Edit your chore.</h2>
+        <ul>
+            {% if messages %}
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            {% endif  %}
+        </ul>
+        <form action="/chores/{{ chore.id }}/update" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="name" class="form-label">Chore Name:</label>
+                <input type="text" name="name" id="name" class="form-control" value="{{ chore.name }}">
+            </div>
+            <div class="mb-3">
+                <label for="assignee_id" class="form-label">Assigned To:</label>
+                <select name="assignee_id" id="assignee_id" class="form-select">
+                    {% for user in all_users %}
+                    <option value="{{ user.id }}">{{ user.full_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Edit Chore</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
